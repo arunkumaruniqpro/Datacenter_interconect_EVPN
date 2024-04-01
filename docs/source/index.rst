@@ -140,12 +140,9 @@ Lab Setup:
 3. On vEDGE-DC01 and vEDGE-DC02 router
 ======================================
 
-1. Configure interface for core loopback router id
-=========================================
-
-
 .. code-block:: console
-
+      1. Configure interface for core loopback router id
+      ---------------------------------------------------
         On vEDGE-DC01
         -------------
          conf t
@@ -162,11 +159,8 @@ Lab Setup:
           end
           wr me
 
-
-2. Enable MPLS & L2 VPN EVPN Globally for both vEDGE-DC01 and vEDGE-DC02
-========================================================================
-
-.. code-block:: console
+    2. Enable MPLS & L2 VPN EVPN Globally for both vEDGE-DC01 and vEDGE-DC02
+    ------------------------------------------------------------------------
         conf t
         mpls ip 
         mpls label protocol ldp
@@ -179,10 +173,9 @@ Lab Setup:
         end
         wr me
 
-3. Configure IKEv2 IPSEC tunnel profile 
----------------------------------------
 
-.. code-block:: console
+    3. Configure IKEv2 IPSEC tunnel profile 
+    ---------------------------------------
 
    IKEv2 Proposal for both vEDGE-DC01 and vEDGE-DC02
   ---------------------------------------------------
@@ -237,14 +230,11 @@ Lab Setup:
       end
       wr me
 
-3. Configure interface for core MPLS MP-BGP infra
--------------------------------------------------
-
-.. code-block:: console
-
+    
+    3. Configure interface for core MPLS MP-BGP infra
+    -------------------------------------------------
       Interface configuration for vEDGE-DC01
       --------------------------------------
-  
         conf t
         interface g1
         no shut
@@ -272,7 +262,6 @@ Lab Setup:
   
       Interface configuration for vEDGE-DC02
       --------------------------------------
-  
         conf t
         interface g1
         no shut
@@ -299,10 +288,10 @@ Lab Setup:
         we me
   
   
-  Verification
-  ------------
-  on vEDGE-DC01
-  -------------
+    Verification
+    ------------
+    on vEDGE-DC01
+    -------------
   
         vEDGE-DC01#sh ip int bri
         Interface              IP-Address      OK? Method Status                Protocol
@@ -363,9 +352,8 @@ Lab Setup:
              0 unknown protocol drops
              0 output buffer failures, 0 output buffers swapped out
   
-      on vEDGE-DC02
-      -------------
-  
+        on vEDGE-DC02
+        -------------
         vEDGE-DC02#sh ip int bri
         Interface              IP-Address      OK? Method Status                Protocol
         GigabitEthernet1       10.16.201.1     YES manual up                    up
@@ -382,7 +370,6 @@ Lab Setup:
         Gi4                            up             up
         Lo0                            up             up       "For iBGP, LDP, and EVPN core"
         Tu0                            up             up       "GRE over IPSec via G1"
-  
   
         vEDGE-DC02#sh int t0
         Tunnel0 is up, line protocol is up
@@ -465,10 +452,10 @@ Lab Setup:
           !!!!!
           Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms
 
-4. Configure IGP - OSPF for route exchange
-------------------------------------------
+    4. Configure IGP - OSPF for route exchange
+    ------------------------------------------
 
-.. code-block:: console
+
 
     OSPF Configuration on vEDGE-DC01
     --------------------------------
@@ -670,10 +657,10 @@ Lab Setup:
 
 
 
-5. Configure MP - BGP for EVPN
--------------------------------
+    5. Configure MP - BGP for EVPN
+    -------------------------------
 
-.. code-block:: console
+
 
     MP_BGP for vEDGE-DC01
     ---------------------
@@ -724,8 +711,6 @@ Lab Setup:
     Verify the BGP establishment on either vEDGE-DC01 or vEDGE-DC02
     ---------------------------------------------------------------
 
-.. code-block:: console
-      
       vEDGE-DC01#show bgp l2vpn evpn summary
       BGP router identifier 2.2.247.1, local AS number 65000
       BGP table version is 41, main routing table version 41
@@ -763,10 +748,9 @@ Lab Setup:
       2.2.247.1       4        65000     198     205       39    0    0 02:44:55        3
 
 
-6. Configre L2VPN service instance for Customer A
---------------------------------------------------
-.. code-block:: console
-   
+    6. Configre L2VPN service instance for Customer A
+    --------------------------------------------------
+
 
     L2VPN service instance for both vEDGE-DC01 and vEDGE-DC02
     ---------------------------------------------------------
@@ -846,11 +830,8 @@ Lab Setup:
               Routes: 1 MAC, 1 MAC/IP, 1 IMET, 0 EAD
 
 
-7. Configure bridge domain for Customer A
-------------------------------------------
-.. code-block:: console
-    
-
+    7. Configure bridge domain for Customer A
+    ------------------------------------------
     Bridge Domain for both vEDGE-DC01 and vEDGE-DC02
     ------------------------------------------------
 
@@ -897,12 +878,8 @@ Lab Setup:
          -   0050.0000.0600 forward dynamic_c 29   GigabitEthernet2.EFP1015
 
 
-8. Configure Customer facing interface for Customer A
------------------------------------------------------
-
-.. code-block:: console
-    
-
+    8. Configure Customer facing interface for Customer A
+    -----------------------------------------------------
     Customer facing interfaces for both vEDGE-DC01 and vEDGE-DC02
     -------------------------------------------------------------
     for untagged
@@ -939,15 +916,10 @@ Lab Setup:
 
 
 
-Verification
-------------
-
-.. code-block:: console
-
+    Verification
+    ------------
     on vEDGE-DC01
     -------------
-
-
       vEDGE-DC01#show ip bgp l2vpn evpn route-type 2
       BGP routing table entry for [2][11.11.11.0:1015][5][48][005000000400][0][*]/20, version 36
       Paths: (1 available, best #1, table evi_1015)
@@ -1036,10 +1008,8 @@ Verification
          -   0050.0000.0600 forward static_r  0    EFI1015.1015.4210704, EVPN
 
 
-    On vEDGE-DC02
-    -------------
-
-
+      On vEDGE-DC02
+      -------------
       vEDGE-DC02#$ l2vpn evpn route-type 2
       BGP routing table entry for [2][11.11.11.0:1015][5][48][005000000400][0][*]/20, version 36
       Paths: (1 available, best #1, table evi_1015)
