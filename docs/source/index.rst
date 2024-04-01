@@ -141,26 +141,20 @@ Lab Setup:
 ======================================
 
 1. Configure interface for core router id
------------------------------------------
+=========================================
 
-Loopback 0 for vEDGE-DC01
--------------------------
+On vEDGE-DC01
 
 .. code-block:: console
-
-      conf t
+     conf t
       interface lo0
-      ip add 2.2.247.1 255.255.255.255
+      ip add 2.2.247.2 255.255.255.255
       end
       wr me
 
-Loopback 0 for vEDGE-DC02
--------------------------
-1. Configure interface for core router id
-=========================================
+On vEDGE-DC02
 
 .. code-block:: console
-
       conf t
       interface lo0
       ip add 2.2.247.2 255.255.255.255
@@ -186,9 +180,11 @@ Loopback 0 for vEDGE-DC02
 
 3. Configure IKEv2 IPSEC tunnel profile 
 ---------------------------------------
-# IKEv2 Proposal for both vEDGE-DC01 and vEDGE-DC02
----------------------------------------------------
+
 .. code-block:: console
+
+   IKEv2 Proposal for both vEDGE-DC01 and vEDGE-DC02
+  ---------------------------------------------------
       Conf t
       !
       crypto ikev2 proposal ikev2-proposal
@@ -196,24 +192,21 @@ Loopback 0 for vEDGE-DC02
        prf sha384
        group 19 20 21
       !
-# IKEv2 Policyfor both vEDGE-DC01 and vEDGE-02
-----------------------------------------------
-.. code-block:: console
+     IKEv2 Policyfor both vEDGE-DC01 and vEDGE-02
+    ----------------------------------------------
       crypto ikev2 policy ikev2-policy
        proposal ikev2-proposal
       !
-# IKEv2 Keyring for vEDGE-DC01 
-------------------------------
-.. code-block:: console
+   IKEv2 Keyring for vEDGE-DC01 
+  ------------------------------
       crypto ikev2 keyring ikev2-keyring
        peer p2p-vedges
         address 10.16.201.1
         pre-shared-key local cisco cisco
         pre-shared-key remote cisco cisco
        !
-# IKEv2 Keyring for vEDGE-DC02 
-------------------------------
-.. code-block:: console
+     IKEv2 Keyring for vEDGE-DC02 
+    ------------------------------
       crypto ikev2 keyring ikev2-keyring
        peer p2p-vedges
         address 10.16.201.2
@@ -221,25 +214,21 @@ Loopback 0 for vEDGE-DC02
         pre-shared-key remote cisco cisco
        !
 
-
-# IKEv2 Profile for vEDGE-DC01 & vEDGE-DC02
--------------------------------------------
-.. code-block:: console
+     IKEv2 Profile for vEDGE-DC01 & vEDGE-DC02
+    -------------------------------------------
       crypto ikev2 profile ikev2-profile
        match identity remote address 0.0.0.0
        authentication remote pre-share
        authentication local pre-share
        keyring local ikev2-keyring
       !
-# IPSec Transform-Set for vEDGE-DC01 & vEDGE-DC02
--------------------------------------------------
-.. code-block:: console
+    IPSec Transform-Set for vEDGE-DC01 & vEDGE-DC02
+    -------------------------------------------------
       crypto ipsec transform-set transform-set-ikev2-ipsec esp-aes 256 esp-sha512-hmac
        mode transport
       !
-# IPSec Profile for vEDGE-DC01 & vEDGE-DC02
--------------------------------------------
-.. code-block:: console
+     IPSec Profile for vEDGE-DC01 & vEDGE-DC02
+    -------------------------------------------
       crypto ipsec profile p2p-vedge-ipsec-profile
        set transform-set transform-set-ikev2-ipsec
        set ikev2-profile ikev2-profile
@@ -250,9 +239,11 @@ Loopback 0 for vEDGE-DC02
 3. Configure interface for core MPLS MP-BGP infra
 -------------------------------------------------
 
-Interface configuration for vEDGE-DC01
---------------------------------------
 .. code-block:: console
+
+    Interface configuration for vEDGE-DC01
+    --------------------------------------
+
       conf t
       interface g1
       no shut
@@ -278,9 +269,9 @@ Interface configuration for vEDGE-DC01
       end
       we me
 
-Interface configuration for vEDGE-DC02
---------------------------------------
-.. code-block:: console
+    Interface configuration for vEDGE-DC02
+    --------------------------------------
+
       conf t
       interface g1
       no shut
@@ -311,7 +302,7 @@ Verification
 ------------
 on vEDGE-DC01
 -------------
-.. code-block:: console
+
       vEDGE-DC01#sh ip int bri
       Interface              IP-Address      OK? Method Status                Protocol
       GigabitEthernet1       10.16.201.2     YES manual up                    up
@@ -321,7 +312,7 @@ on vEDGE-DC01
       Loopback0              2.2.247.1       YES manual up                    up
       Tunnel0                1.1.247.1       YES manual up                    up
 
-.. code-block:: console
+
       vEDGE-DC01#sh int desc
       Interface                      Status         Protocol Description
       Gi1                            up             up       "To Internet"
@@ -331,8 +322,6 @@ on vEDGE-DC01
       Lo0                            up             up
       Tu0                            up             up       "GRE over IPsec via G1"
 
-
-.. code-block:: console
       vEDGE-DC01#sh int tunnel 0
       Tunnel0 is up, line protocol is up
         Hardware is Tunnel
@@ -373,9 +362,9 @@ on vEDGE-DC01
            0 unknown protocol drops
            0 output buffer failures, 0 output buffers swapped out
 
-on vEDGE-DC02
--------------
-.. code-block:: console
+    on vEDGE-DC02
+    -------------
+
       vEDGE-DC02#sh ip int bri
       Interface              IP-Address      OK? Method Status                Protocol
       GigabitEthernet1       10.16.201.1     YES manual up                    up
@@ -393,7 +382,7 @@ on vEDGE-DC02
       Lo0                            up             up       "For iBGP, LDP, and EVPN core"
       Tu0                            up             up       "GRE over IPSec via G1"
 
-.. code-block:: console
+
       vEDGE-DC02#sh int t0
       Tunnel0 is up, line protocol is up
         Hardware is Tunnel
@@ -434,20 +423,21 @@ on vEDGE-DC02
            0 unknown protocol drops
            0 output buffer failures, 0 output buffers swapped out
 
-L3 Connectivity Test
---------------------
-P2P on vEDGE-DC01
------------------
 .. code-block:: console
+    L3 Connectivity Test
+    --------------------
+    P2P on vEDGE-DC01
+    -----------------
+
       vEDGE-DC01#ping 10.16.201.1
       Type escape sequence to abort.
       Sending 5, 100-byte ICMP Echos to 10.16.201.1, timeout is 2 seconds:
       !!!!!
       Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/3 ms
 
-Lo0 to Lo0 via OSPF and GRE over IPSEC
---------------------------------------
-.. code-block:: console
+    Lo0 to Lo0 via OSPF and GRE over IPSEC
+    --------------------------------------
+
       vEDGE-DC01#ping 2.2.247.2 source 2.2.247.1
       Type escape sequence to abort.
       Sending 5, 100-byte ICMP Echos to 2.2.247.2, timeout is 2 seconds:
@@ -455,18 +445,18 @@ Lo0 to Lo0 via OSPF and GRE over IPSEC
       !!!!!
       Success rate is 100 percent (5/5), round-trip min/avg/max = 2/2/3 ms
 
-P2P on vEDGE-DC01
------------------
-.. code-block:: console
+    P2P on vEDGE-DC01
+    -----------------
+
       vEDGE-DC02#ping 10.16.201.2
       Type escape sequence to abort.
       Sending 5, 100-byte ICMP Echos to 10.16.201.2, timeout is 2 seconds:
       !!!!!
       Success rate is 100 percent (5/5), round-trip min/avg/max = 1/4/16 ms
 
-Lo0 to Lo0 via OSPF and GRE over IPSEC
---------------------------------------
-.. code-block:: console
+    Lo0 to Lo0 via OSPF and GRE over IPSEC
+    --------------------------------------
+
       vEDGE-DC02#ping 2.2.247.1 source 2.2.247.2
       Type escape sequence to abort.
       Sending 5, 100-byte ICMP Echos to 2.2.247.1, timeout is 2 seconds:
@@ -474,29 +464,29 @@ Lo0 to Lo0 via OSPF and GRE over IPSEC
       !!!!!
       Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms
 
-4. Configure IGP - OSPF for route exchange
-------------------------------------------
-OSPF Configuration on vEDGE-DC01
---------------------------------
-.. code-block:: console
+    4. Configure IGP - OSPF for route exchange
+    ------------------------------------------
+    OSPF Configuration on vEDGE-DC01
+    --------------------------------
+
       conf t
       router ospf 11
       router-id 1.1.247.1
       end
       wr me
 
-OSPF Configuration on vEDGE-DC02
---------------------------------
-.. code-block:: console
+    OSPF Configuration on vEDGE-DC02
+    --------------------------------
+
       conf t
       router ospf 11
       router-id 1.1.247.2
       end
       wr me
 
-Verification - OSPF and Route table on vEDGE-DC01
--------------------------------------------------
-.. code-block:: console
+    Verification - OSPF and Route table on vEDGE-DC01
+    -------------------------------------------------
+
       vEDGE-DC01#sh ip ospf nei
       Neighbor ID     Pri   State           Dead Time   Address         Interface
       1.1.247.2         0   FULL/  -        00:00:38    1.1.247.2       Tunnel0
@@ -510,7 +500,7 @@ Verification - OSPF and Route table on vEDGE-DC01
       1.1.247.1       1.1.247.1       1935        0x8000000A 0x002F23 3
       1.1.247.2       1.1.247.2       18          0x80000009 0x002F21 3
 
-.. code-block:: console
+
       vEDGE-DC01#sh ip route
       Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
              D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
@@ -541,14 +531,14 @@ Verification - OSPF and Route table on vEDGE-DC01
       C        192.168.182.0/24 is directly connected, GigabitEthernet4
       L        192.168.182.144/32 is directly connected, GigabitEthernet4
 
-Verification of MPLS and LDP establishment
-------------------------------------------
-.. code-block:: console
+    Verification of MPLS and LDP establishment
+    ------------------------------------------
+
       vEDGE-DC01#sh mpls interfaces
       Interface              IP            Tunnel   BGP Static Operational
       Tunnel0                Yes (ldp)     No       Yes No     Yes
 
-.. code-block:: console
+
       vEDGE-DC01#show mpls forwarding-table
       Local      Outgoing   Prefix           Bytes Label   Outgoing   Next Hop
       Label      Label      or Tunnel Id     Switched      interface
@@ -558,7 +548,6 @@ Verification of MPLS and LDP establishment
       19         No Label   evpn(uc:ifh 0x8, efp 1015)   \
                                              861798        none       point2point
 
-.. code-block:: console
       vEDGE-DC01#sh mpls ldp bindings
         lib entry: 0.0.0.0/0, rev 2
               local binding:  label: imp-null
@@ -579,7 +568,6 @@ Verification of MPLS and LDP establishment
               local binding:  label: imp-null
               remote binding: lsr: 192.168.182.143:0, label: imp-null
 
-.. code-block:: console
       vEDGE-DC01#sh mpls ldp discovery
        Local LDP Identifier:
           2.2.247.1:0
@@ -589,9 +577,9 @@ Verification of MPLS and LDP establishment
                   LDP Id: 192.168.182.143:0
       
 
-Verification - OSPF and Route table on vEDGE-DC02
--------------------------------------------------
-.. code-block:: console
+    Verification - OSPF and Route table on vEDGE-DC02
+    -------------------------------------------------
+
       vEDGE-DC02#sh ip ospf nei
       
       Neighbor ID     Pri   State           Dead Time   Address         Interface
@@ -605,7 +593,7 @@ Verification - OSPF and Route table on vEDGE-DC02
       Link ID         ADV Router      Age         Seq#       Checksum Link count
       1.1.247.1       1.1.247.1       1688        0x8000000B 0x002D24 3
       1.1.247.2       1.1.247.2       1783        0x80000009 0x002F21 3
-.. code-block:: console
+
       vEDGE-DC02#sh ip route
       Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
              D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
@@ -636,7 +624,7 @@ Verification - OSPF and Route table on vEDGE-DC02
       C        192.168.182.0/24 is directly connected, GigabitEthernet4
       L        192.168.182.143/32 is directly connected, GigabitEthernet4
 
-.. code-block:: console
+
       vEDGE-DC02#sh mpls int
       Interface              IP            Tunnel   BGP Static Operational
       Tunnel0                Yes (ldp)     No       Yes No     Yes
@@ -666,7 +654,7 @@ Verification - OSPF and Route table on vEDGE-DC02
         lib entry: 192.168.182.0/24, rev 8
               local binding:  label: imp-null
               remote binding: lsr: 2.2.247.1:0, label: imp-null
-.. code-block:: console
+
       vEDGE-DC02#sh mpls forwarding
       Local      Outgoing   Prefix           Bytes Label   Outgoing   Next Hop
       Label      Label      or Tunnel Id     Switched      interface
@@ -680,10 +668,11 @@ Verification - OSPF and Route table on vEDGE-DC02
 
 5. Configure MP - BGP for EVPN
 -------------------------------
-
-MP_BGP for vEDGE-DC01
----------------------
 .. code-block:: console
+
+    MP_BGP for vEDGE-DC01
+    ---------------------
+
       conf t
       router bgp 65000
        bgp router-id 2.2.247.1
@@ -704,9 +693,9 @@ MP_BGP for vEDGE-DC01
       end
       wr me
 
-MP_BGP for vEDGE-DC01
----------------------
-.. code-block:: console
+    MP_BGP for vEDGE-DC01
+    ---------------------
+
       conf t
       router bgp 65000
        bgp router-id 2.2.247.2
@@ -727,8 +716,8 @@ MP_BGP for vEDGE-DC01
       end
       wr me
 
-Verify the BGP establishment on either vEDGE-DC01 or vEDGE-DC02
----------------------------------------------------------------
+    Verify the BGP establishment on either vEDGE-DC01 or vEDGE-DC02
+    ---------------------------------------------------------------
 .. code-block:: console
       vEDGE-DC01#show bgp l2vpn evpn summary
       BGP router identifier 2.2.247.1, local AS number 65000
@@ -747,8 +736,8 @@ Verify the BGP establishment on either vEDGE-DC01 or vEDGE-DC02
       2.2.247.2       4        65000     172     166       41    0    0 02:15:52        3
 
 
-Verify the BGP establishment on either vEDGE-DC01 or vEDGE-DC02
----------------------------------------------------------------
+    Verify the BGP establishment on either vEDGE-DC01 or vEDGE-DC02
+    ---------------------------------------------------------------
 .. code-block:: console
       vEDGE-DC02# show bgp l2vpn evpn summary
       BGP router identifier 2.2.247.2, local AS number 65000
@@ -769,10 +758,10 @@ Verify the BGP establishment on either vEDGE-DC01 or vEDGE-DC02
 
 6. Configre L2VPN service instance for Customer A
 --------------------------------------------------
-
-L2VPN service instance for both vEDGE-DC01 and vEDGE-DC02
----------------------------------------------------------
 .. code-block:: console
+    L2VPN service instance for both vEDGE-DC01 and vEDGE-DC02
+    ---------------------------------------------------------
+
       conf t
       l2vpn evpn instance 1015 vlan-aware
        rd 11.11.11.0:1015
@@ -782,9 +771,9 @@ L2VPN service instance for both vEDGE-DC01 and vEDGE-DC02
       end
       wr me
 
-on vEDGE-DC01
--------------
-.. code-block:: console
+    on vEDGE-DC01
+    -------------
+
       vEDGE-DC01#show l2vpn evpn evi detail
       EVPN instance:       1015 (VLAN Aware)
         RD:                11.11.11.0:1015 (cfg)
@@ -815,9 +804,9 @@ on vEDGE-DC01
               Routes: 1 MAC, 1 MAC/IP, 1 IMET, 0 EAD
 
 
-on vEDGE-DC02
--------------
-.. code-block:: console
+    on vEDGE-DC02
+    -------------
+
       vEDGE-DC02#show l2vpn evpn evi detail
       EVPN instance:       1015 (VLAN Aware)
         RD:                11.11.11.0:1015 (cfg)
@@ -850,10 +839,10 @@ on vEDGE-DC02
 
 7. Configure bridge domain for Customer A
 ------------------------------------------
-
-Bridge Domain for both vEDGE-DC01 and vEDGE-DC02
-------------------------------------------------
 .. code-block:: console
+    Bridge Domain for both vEDGE-DC01 and vEDGE-DC02
+    ------------------------------------------------
+
       conf t
       bridge-domain 1015
        mac aging-time 30
@@ -863,9 +852,9 @@ Bridge Domain for both vEDGE-DC01 and vEDGE-DC02
       end
       wr me
 
-on vEDGE-DC01
--------------
-.. code-block:: console
+    on vEDGE-DC01
+    -------------
+
       vEDGE-DC01#show bridge-domain 1015 evpn
       Bridge-domain 1015 (2 ports in all)
       State: UP                    Mac learning: Enabled
@@ -880,9 +869,9 @@ on vEDGE-DC01
          -   0050.0000.0600 forward static_r  0    EFI1015.1015.4210704, EVPN
 
 
-on vEDGE-DC02
--------------
-.. code-block:: console
+    on vEDGE-DC02
+    -------------
+
       vEDGE-DC02#show bridge-domain 1015 evpn
       Bridge-domain 1015 (2 ports in all)
       State: UP                    Mac learning: Enabled
@@ -900,11 +889,12 @@ on vEDGE-DC02
 8. Configure Customer facing interface for Customer A
 -----------------------------------------------------
 
-Customer facing interfaces for both vEDGE-DC01 and vEDGE-DC02
--------------------------------------------------------------
-for untagged
-------------
 .. code-block:: console
+    Customer facing interfaces for both vEDGE-DC01 and vEDGE-DC02
+    -------------------------------------------------------------
+    for untagged
+    ------------
+
       interface GigabitEthernet2
        description "To PC01 via leaf-DC01-Sw01 port eth0/0"
        no ip address
@@ -918,9 +908,9 @@ for untagged
       end
       wr me
 
-for tagged - 802.1q
--------------------
-.. code-block:: console
+    for tagged - 802.1q
+    -------------------
+
       interface GigabitEthernet2
        description "To PC01 via leaf-DC01-Sw01 port eth0/0"
        no ip address
@@ -938,10 +928,13 @@ for tagged - 802.1q
 
 Verification
 ------------
-on vEDGE-DC01
--------------
 
 .. code-block:: console
+
+    on vEDGE-DC01
+    -------------
+
+
       vEDGE-DC01#show ip bgp l2vpn evpn route-type 2
       BGP routing table entry for [2][11.11.11.0:1015][5][48][005000000400][0][*]/20, version 36
       Paths: (1 available, best #1, table evi_1015)
@@ -1030,94 +1023,94 @@ on vEDGE-DC01
          -   0050.0000.0600 forward static_r  0    EFI1015.1015.4210704, EVPN
 
 
-On vEDGE-DC02
--------------
+    On vEDGE-DC02
+    -------------
 
-.. code-block:: console
-vEDGE-DC02#$ l2vpn evpn route-type 2
-BGP routing table entry for [2][11.11.11.0:1015][5][48][005000000400][0][*]/20, version 36
-Paths: (1 available, best #1, table evi_1015)
-  Not advertised to any peer
-  Refresh Epoch 3
-  Local, (received & used)
-    2.2.247.1 (metric 1001) (via default) from 2.2.247.1 (2.2.247.1)
-      Origin incomplete, metric 0, localpref 100, valid, internal, best
-      EVPN ESI: 00000000000000000000, Label1 19
-      Extended Community: RT:65000:1015
-      rx pathid: 0, tx pathid: 0x0
-      Updated on Apr 1 2024 10:39:29 UTC
-BGP routing table entry for [2][11.11.11.0:1015][5][48][005000000400][32][11.11.11.11]/24, version 37
-Paths: (1 available, best #1, table evi_1015)
-  Not advertised to any peer
-  Refresh Epoch 3
-  Local, (received & used)
-    2.2.247.1 (metric 1001) (via default) from 2.2.247.1 (2.2.247.1)
-      Origin incomplete, metric 0, localpref 100, valid, internal, best
-      EVPN ESI: 00000000000000000000, Label1 19
-      Extended Community: RT:65000:1015
-      rx pathid: 0, tx pathid: 0x0
-      Updated on Apr 1 2024 10:39:29 UTC
-BGP routing table entry for [2][11.11.11.0:1015][5][48][005000000600][0][*]/20, version 38
-Paths: (1 available, best #1, table evi_1015)
-  Advertised to update-groups:
-     1
-  Refresh Epoch 1
-  Local
-    :: (via default) from 0.0.0.0 (2.2.247.2)
-      Origin incomplete, localpref 100, weight 32768, valid, sourced, local, best
-      EVPN ESI: 00000000000000000000, Label1 19
-      Extended Community: RT:65000:1015
-      rx pathid: 0, tx pathid: 0x0
-      Updated on Apr 1 2024 10:39:30 UTC
-BGP routing table entry for [2][11.11.11.0:1015][5][48][005000000600][32][11.11.11.12]/24, version 39
-Paths: (1 available, best #1, table evi_1015)
-  Advertised to update-groups:
-     1
-  Refresh Epoch 1
-  Local
-    :: (via default) from 0.0.0.0 (2.2.247.2)
-      Origin incomplete, localpref 100, weight 32768, valid, sourced, local, best
-      EVPN ESI: 00000000000000000000, Label1 19
-      Extended Community: RT:65000:1015
-      rx pathid: 0, tx pathid: 0x0
-      Updated on Apr 1 2024 10:39:30 UTC
-vEDGE-DC02#show ip bgp l2vpn evpn route-type 3
-BGP routing table entry for [3][11.11.11.0:1015][5][32][2.2.247.1]/17, version 5
-Paths: (1 available, best #1, table evi_1015)
-  Flag: 0x100
-  Not advertised to any peer
-  Refresh Epoch 3
-  Local, (received & used)
-    2.2.247.1 (metric 1001) (via default) from 2.2.247.1 (2.2.247.1)
-      Origin incomplete, metric 0, localpref 100, valid, internal, best
-      Extended Community: RT:65000:1015
-      PMSI Attribute: Flags:0x0, Tunnel type:IR, length 4, label:17, tunnel identifier: < Tunnel Endpoint: 2.2.247.1 >
-      rx pathid: 0, tx pathid: 0x0
-      Updated on Apr 1 2024 09:22:06 UTC
-BGP routing table entry for [3][11.11.11.0:1015][5][32][2.2.247.2]/17, version 8
-Paths: (1 available, best #1, table evi_1015)
-  Advertised to update-groups:
-     1
-  Refresh Epoch 1
-  Local
-    :: (via default) from 0.0.0.0 (2.2.247.2)
-      Origin incomplete, localpref 100, weight 32768, valid, sourced, local, best
-      Extended Community: RT:65000:1015
-      PMSI Attribute: Flags:0x0, Tunnel type:IR, length 4, label:17, tunnel identifier: 0000 0000
-      rx pathid: 0, tx pathid: 0x0
-      Updated on Apr 1 2024 09:42:11 UTC
 
-vEDGE-DC02#show bridge-domain 1015 evpn
-Bridge-domain 1015 (2 ports in all)
-State: UP                    Mac learning: Enabled
-Aging-Timer: 30 second(s)
-Unknown Unicast Flooding Suppression: Disabled
-Maximum address limit: 65536
-    GigabitEthernet2 service instance 1015
-    EVPN Instance 1015
-   AED MAC address    Policy  Tag       Age  Pseudoport
-   -----------------------------------------------------------------------------
-   -   0050.0000.0400 forward static_r  0    EFI1015.1015.4210704, EVPN
-   -   0050.0000.0600 forward dynamic_c 29   GigabitEthernet2.EFP1015
+      vEDGE-DC02#$ l2vpn evpn route-type 2
+      BGP routing table entry for [2][11.11.11.0:1015][5][48][005000000400][0][*]/20, version 36
+      Paths: (1 available, best #1, table evi_1015)
+        Not advertised to any peer
+        Refresh Epoch 3
+        Local, (received & used)
+          2.2.247.1 (metric 1001) (via default) from 2.2.247.1 (2.2.247.1)
+            Origin incomplete, metric 0, localpref 100, valid, internal, best
+            EVPN ESI: 00000000000000000000, Label1 19
+            Extended Community: RT:65000:1015
+            rx pathid: 0, tx pathid: 0x0
+            Updated on Apr 1 2024 10:39:29 UTC
+      BGP routing table entry for [2][11.11.11.0:1015][5][48][005000000400][32][11.11.11.11]/24, version 37
+      Paths: (1 available, best #1, table evi_1015)
+        Not advertised to any peer
+        Refresh Epoch 3
+        Local, (received & used)
+          2.2.247.1 (metric 1001) (via default) from 2.2.247.1 (2.2.247.1)
+            Origin incomplete, metric 0, localpref 100, valid, internal, best
+            EVPN ESI: 00000000000000000000, Label1 19
+            Extended Community: RT:65000:1015
+            rx pathid: 0, tx pathid: 0x0
+            Updated on Apr 1 2024 10:39:29 UTC
+      BGP routing table entry for [2][11.11.11.0:1015][5][48][005000000600][0][*]/20, version 38
+      Paths: (1 available, best #1, table evi_1015)
+        Advertised to update-groups:
+           1
+        Refresh Epoch 1
+        Local
+          :: (via default) from 0.0.0.0 (2.2.247.2)
+            Origin incomplete, localpref 100, weight 32768, valid, sourced, local, best
+            EVPN ESI: 00000000000000000000, Label1 19
+            Extended Community: RT:65000:1015
+            rx pathid: 0, tx pathid: 0x0
+            Updated on Apr 1 2024 10:39:30 UTC
+      BGP routing table entry for [2][11.11.11.0:1015][5][48][005000000600][32][11.11.11.12]/24, version 39
+      Paths: (1 available, best #1, table evi_1015)
+        Advertised to update-groups:
+           1
+        Refresh Epoch 1
+        Local
+          :: (via default) from 0.0.0.0 (2.2.247.2)
+            Origin incomplete, localpref 100, weight 32768, valid, sourced, local, best
+            EVPN ESI: 00000000000000000000, Label1 19
+            Extended Community: RT:65000:1015
+            rx pathid: 0, tx pathid: 0x0
+            Updated on Apr 1 2024 10:39:30 UTC
+      vEDGE-DC02#show ip bgp l2vpn evpn route-type 3
+      BGP routing table entry for [3][11.11.11.0:1015][5][32][2.2.247.1]/17, version 5
+      Paths: (1 available, best #1, table evi_1015)
+        Flag: 0x100
+        Not advertised to any peer
+        Refresh Epoch 3
+        Local, (received & used)
+          2.2.247.1 (metric 1001) (via default) from 2.2.247.1 (2.2.247.1)
+            Origin incomplete, metric 0, localpref 100, valid, internal, best
+            Extended Community: RT:65000:1015
+            PMSI Attribute: Flags:0x0, Tunnel type:IR, length 4, label:17, tunnel identifier: < Tunnel Endpoint: 2.2.247.1 >
+            rx pathid: 0, tx pathid: 0x0
+            Updated on Apr 1 2024 09:22:06 UTC
+      BGP routing table entry for [3][11.11.11.0:1015][5][32][2.2.247.2]/17, version 8
+      Paths: (1 available, best #1, table evi_1015)
+        Advertised to update-groups:
+           1
+        Refresh Epoch 1
+        Local
+          :: (via default) from 0.0.0.0 (2.2.247.2)
+            Origin incomplete, localpref 100, weight 32768, valid, sourced, local, best
+            Extended Community: RT:65000:1015
+            PMSI Attribute: Flags:0x0, Tunnel type:IR, length 4, label:17, tunnel identifier: 0000 0000
+            rx pathid: 0, tx pathid: 0x0
+            Updated on Apr 1 2024 09:42:11 UTC
+      
+      vEDGE-DC02#show bridge-domain 1015 evpn
+      Bridge-domain 1015 (2 ports in all)
+      State: UP                    Mac learning: Enabled
+      Aging-Timer: 30 second(s)
+      Unknown Unicast Flooding Suppression: Disabled
+      Maximum address limit: 65536
+          GigabitEthernet2 service instance 1015
+          EVPN Instance 1015
+         AED MAC address    Policy  Tag       Age  Pseudoport
+         -----------------------------------------------------------------------------
+         -   0050.0000.0400 forward static_r  0    EFI1015.1015.4210704, EVPN
+         -   0050.0000.0600 forward dynamic_c 29   GigabitEthernet2.EFP1015
 
 
