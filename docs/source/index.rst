@@ -140,41 +140,44 @@ Lab Setup:
 3. On vEDGE-DC01 and vEDGE-DC02 router
 ======================================
 
-1. Configure interface for core router id
+1. Configure interface for core loopback router id
 =========================================
-.. code-block:: console
-    On vEDGE-DC01
-    -------------
-     conf t
-      interface lo0
-      ip add 2.2.247.2 255.255.255.255
-      end
-      wr me
 
-    On vEDGE-DC02
-    -------------
-      conf t
-      interface lo0
-      ip add 2.2.247.2 255.255.255.255
-      end
-      wr me
+
+.. code-block:: console
+
+        On vEDGE-DC01
+        -------------
+         conf t
+          interface lo0
+          ip add 2.2.247.2 255.255.255.255
+          end
+          wr me
+    
+        On vEDGE-DC02
+        -------------
+          conf t
+          interface lo0
+          ip add 2.2.247.2 255.255.255.255
+          end
+          wr me
 
 
 2. Enable MPLS & L2 VPN EVPN Globally for both vEDGE-DC01 and vEDGE-DC02
 ========================================================================
 
 .. code-block:: console
-      conf t
-      mpls ip 
-      mpls label protocol ldp
-      mpls ldp router-id lo0
-      l2vpn evpn
-       replication-type ingress
-       mpls label mode per-ce
-       router-id Loopback0
-      !
-      end
-      wr me
+        conf t
+        mpls ip 
+        mpls label protocol ldp
+        mpls ldp router-id lo0
+        l2vpn evpn
+         replication-type ingress
+         mpls label mode per-ce
+         router-id Loopback0
+        !
+        end
+        wr me
 
 3. Configure IKEv2 IPSEC tunnel profile 
 ---------------------------------------
@@ -239,231 +242,234 @@ Lab Setup:
 
 .. code-block:: console
 
-    Interface configuration for vEDGE-DC01
-    --------------------------------------
+      Interface configuration for vEDGE-DC01
+      --------------------------------------
+  
+        conf t
+        interface g1
+        no shut
+        desc "To internet"
+        ip address 10.16.201.2 255.255.255.0
+        exit
+        int tu0
+        desc "GRE over IPSec via Internet (port G1)"
+        no shut
+        ip address 1.1.247.1 255.255.255.255
+        ip mtu 1400
+        ip tcp adjust-ms 1360
+        mpls ip
+        mpls bgp forarding
+        mpls label protocol ldp
+        tunnel source g1
+        tunnel destination 10.16.201.1
+        tunnel mode gre ip
+        tunnel protection ipsec profile p2p-vedge-ipsec-profile
+        ip ospf 11 area 11
+        interface lo0
+        ip ospf 11 area 11
+        end
+        we me
+  
+      Interface configuration for vEDGE-DC02
+      --------------------------------------
+  
+        conf t
+        interface g1
+        no shut
+        desc "To internet"
+        ip address 10.16.201.1 255.255.255.0
+        exit
+        int tu0
+        desc "GRE over IPSec via Internet (port G1)"
+        no shut
+        ip address 1.1.247.2 255.255.255.255
+        ip mtu 1400
+        ip tcp adjust-ms 1360
+        mpls ip
+        mpls bgp forarding
+        mpls label protocol ldp
+        tunnel source g1
+        tunnel destination 10.16.201.2
+        tunnel mode gre ip
+        tunnel protection ipsec profile p2p-vedge-ipsec-profile
+        ip ospf 11 area 11
+        interface lo0
+        ip ospf 11 area 11
+        end
+        we me
+  
+  
+  Verification
+  ------------
+  on vEDGE-DC01
+  -------------
+  
+        vEDGE-DC01#sh ip int bri
+        Interface              IP-Address      OK? Method Status                Protocol
+        GigabitEthernet1       10.16.201.2     YES manual up                    up
+        GigabitEthernet2       unassigned      YES NVRAM  up                    up
+        GigabitEthernet3       unassigned      YES NVRAM  up                    up
+        GigabitEthernet4       192.168.182.144 YES DHCP   up                    up
+        Loopback0              2.2.247.1       YES manual up                    up
+        Tunnel0                1.1.247.1       YES manual up                    up
+  
+  
+        vEDGE-DC01#sh int desc
+        Interface                      Status         Protocol Description
+        Gi1                            up             up       "To Internet"
+        Gi2                            up             up       "To PC01 via leaf-DC01-Sw01 port eth0/0"
+        Gi3                            up             up
+        Gi4                            up             up
+        Lo0                            up             up
+        Tu0                            up             up       "GRE over IPsec via G1"
+  
+        vEDGE-DC01#sh int tunnel 0
+        Tunnel0 is up, line protocol is up
+          Hardware is Tunnel
+          Description: "GRE over IPsec via G1"
+          Internet address is 1.1.247.1/30
+          MTU 9918 bytes, BW 100 Kbit/sec, DLY 50000 usec,
+             reliability 255/255, txload 5/255, rxload 5/255
+          Encapsulation TUNNEL, loopback not set
+          Keepalive not set
+          Tunnel linestate evaluation up
+          Tunnel source 10.16.201.2 (GigabitEthernet1), destination 10.16.201.1
+           Tunnel Subblocks:
+              src-track:
+                 Tunnel0 source tracking subblock associated with GigabitEthernet1
+                  Set of tunnels with source GigabitEthernet1, 1 member (includes iterators), on interface <OK>
+          Tunnel protocol/transport GRE/IP
+            Key disabled, sequencing disabled
+            Checksumming of packets disabled
+          Tunnel TTL 255, Fast tunneling enabled
+          Tunnel transport MTU 1418 bytes
+          Tunnel transmit bandwidth 8000 (kbps)
+          Tunnel receive bandwidth 8000 (kbps)
+          Tunnel protection via IPSec (profile "p2p-vedge-ipsec-profile")
+          Last input 00:00:03, output 00:00:02, output hang never
+          Last clearing of "show interface" counters 03:22:13
+          Input queue: 0/375/0/0 (size/max/drops/flushes); Total output drops: 0
+          Queueing strategy: fifo
+          Output queue: 0/0 (size/max)
+          5 minute input rate 2000 bits/sec, 2 packets/sec
+          5 minute output rate 2000 bits/sec, 2 packets/sec
+             11790 packets input, 1368759 bytes, 0 no buffer
+             Received 0 broadcasts (0 IP multicasts)
+             0 runts, 0 giants, 0 throttles
+             0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored, 0 abort
+             11538 packets output, 1355417 bytes, 0 underruns
+             Output 0 broadcasts (0 IP multicasts)
+             0 output errors, 0 collisions, 0 interface resets
+             0 unknown protocol drops
+             0 output buffer failures, 0 output buffers swapped out
+  
+      on vEDGE-DC02
+      -------------
+  
+        vEDGE-DC02#sh ip int bri
+        Interface              IP-Address      OK? Method Status                Protocol
+        GigabitEthernet1       10.16.201.1     YES manual up                    up
+        GigabitEthernet2       unassigned      YES manual up                    up
+        GigabitEthernet3       unassigned      YES NVRAM  up                    up
+        GigabitEthernet4       192.168.182.143 YES DHCP   up                    up
+        Loopback0              2.2.247.2       YES manual up                    up
+        Tunnel0                1.1.247.2       YES manual up                    up
+        vEDGE-DC02#sh int desc
+        Interface                      Status         Protocol Description
+        Gi1                            up             up       "To Internet"
+        Gi2                            up             up
+        Gi3                            up             up
+        Gi4                            up             up
+        Lo0                            up             up       "For iBGP, LDP, and EVPN core"
+        Tu0                            up             up       "GRE over IPSec via G1"
+  
+  
+        vEDGE-DC02#sh int t0
+        Tunnel0 is up, line protocol is up
+          Hardware is Tunnel
+          Description: "GRE over IPSec via G1"
+          Internet address is 1.1.247.2/30
+          MTU 9918 bytes, BW 100 Kbit/sec, DLY 50000 usec,
+             reliability 255/255, txload 5/255, rxload 5/255
+          Encapsulation TUNNEL, loopback not set
+          Keepalive not set
+          Tunnel linestate evaluation up
+          Tunnel source 10.16.201.1 (GigabitEthernet1), destination 10.16.201.2
+           Tunnel Subblocks:
+              src-track:
+                 Tunnel0 source tracking subblock associated with GigabitEthernet1
+                  Set of tunnels with source GigabitEthernet1, 1 member (includes iterat                                                                                                                ors), on interface <OK>
+          Tunnel protocol/transport GRE/IP
+            Key disabled, sequencing disabled
+            Checksumming of packets disabled
+          Tunnel TTL 255, Fast tunneling enabled
+          Tunnel transport MTU 1418 bytes
+          Tunnel transmit bandwidth 8000 (kbps)
+          Tunnel receive bandwidth 8000 (kbps)
+          Tunnel protection via IPSec (profile "p2p-vedge-ipsec-profile")
+          Last input 00:00:03, output 00:00:00, output hang never
+          Last clearing of "show interface" counters 02:47:28
+          Input queue: 0/375/0/0 (size/max/drops/flushes); Total output drops: 0
+          Queueing strategy: fifo
+          Output queue: 0/0 (size/max)
+          5 minute input rate 2000 bits/sec, 2 packets/sec
+          5 minute output rate 2000 bits/sec, 2 packets/sec
+             15237 packets input, 1812615 bytes, 0 no buffer
+             Received 0 broadcasts (0 IP multicasts)
+             0 runts, 0 giants, 0 throttles
+             0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored, 0 abort
+             15547 packets output, 1830169 bytes, 0 underruns
+             Output 0 broadcasts (0 IP multicasts)
+             0 output errors, 0 collisions, 0 interface resets
+             0 unknown protocol drops
+             0 output buffer failures, 0 output buffers swapped out
 
-      conf t
-      interface g1
-      no shut
-      desc "To internet"
-      ip address 10.16.201.2 255.255.255.0
-      exit
-      int tu0
-      desc "GRE over IPSec via Internet (port G1)"
-      no shut
-      ip address 1.1.247.1 255.255.255.255
-      ip mtu 1400
-      ip tcp adjust-ms 1360
-      mpls ip
-      mpls bgp forarding
-      mpls label protocol ldp
-      tunnel source g1
-      tunnel destination 10.16.201.1
-      tunnel mode gre ip
-      tunnel protection ipsec profile p2p-vedge-ipsec-profile
-      ip ospf 11 area 11
-      interface lo0
-      ip ospf 11 area 11
-      end
-      we me
 
-    Interface configuration for vEDGE-DC02
-    --------------------------------------
+        L3 Connectivity Test
+        --------------------
+        P2P on vEDGE-DC01
+        -----------------
+    
+          vEDGE-DC01#ping 10.16.201.1
+          Type escape sequence to abort.
+          Sending 5, 100-byte ICMP Echos to 10.16.201.1, timeout is 2 seconds:
+          !!!!!
+          Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/3 ms
+    
+        Lo0 to Lo0 via OSPF and GRE over IPSEC
+        --------------------------------------
+    
+          vEDGE-DC01#ping 2.2.247.2 source 2.2.247.1
+          Type escape sequence to abort.
+          Sending 5, 100-byte ICMP Echos to 2.2.247.2, timeout is 2 seconds:
+          Packet sent with a source address of 2.2.247.1
+          !!!!!
+          Success rate is 100 percent (5/5), round-trip min/avg/max = 2/2/3 ms
+    
+        P2P on vEDGE-DC01
+        -----------------
+    
+          vEDGE-DC02#ping 10.16.201.2
+          Type escape sequence to abort.
+          Sending 5, 100-byte ICMP Echos to 10.16.201.2, timeout is 2 seconds:
+          !!!!!
+          Success rate is 100 percent (5/5), round-trip min/avg/max = 1/4/16 ms
+    
+        Lo0 to Lo0 via OSPF and GRE over IPSEC
+        --------------------------------------
+    
+          vEDGE-DC02#ping 2.2.247.1 source 2.2.247.2
+          Type escape sequence to abort.
+          Sending 5, 100-byte ICMP Echos to 2.2.247.1, timeout is 2 seconds:
+          Packet sent with a source address of 2.2.247.2
+          !!!!!
+          Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms
 
-      conf t
-      interface g1
-      no shut
-      desc "To internet"
-      ip address 10.16.201.1 255.255.255.0
-      exit
-      int tu0
-      desc "GRE over IPSec via Internet (port G1)"
-      no shut
-      ip address 1.1.247.2 255.255.255.255
-      ip mtu 1400
-      ip tcp adjust-ms 1360
-      mpls ip
-      mpls bgp forarding
-      mpls label protocol ldp
-      tunnel source g1
-      tunnel destination 10.16.201.2
-      tunnel mode gre ip
-      tunnel protection ipsec profile p2p-vedge-ipsec-profile
-      ip ospf 11 area 11
-      interface lo0
-      ip ospf 11 area 11
-      end
-      we me
-
-
-Verification
-------------
-on vEDGE-DC01
--------------
-
-      vEDGE-DC01#sh ip int bri
-      Interface              IP-Address      OK? Method Status                Protocol
-      GigabitEthernet1       10.16.201.2     YES manual up                    up
-      GigabitEthernet2       unassigned      YES NVRAM  up                    up
-      GigabitEthernet3       unassigned      YES NVRAM  up                    up
-      GigabitEthernet4       192.168.182.144 YES DHCP   up                    up
-      Loopback0              2.2.247.1       YES manual up                    up
-      Tunnel0                1.1.247.1       YES manual up                    up
-
-
-      vEDGE-DC01#sh int desc
-      Interface                      Status         Protocol Description
-      Gi1                            up             up       "To Internet"
-      Gi2                            up             up       "To PC01 via leaf-DC01-Sw01 port eth0/0"
-      Gi3                            up             up
-      Gi4                            up             up
-      Lo0                            up             up
-      Tu0                            up             up       "GRE over IPsec via G1"
-
-      vEDGE-DC01#sh int tunnel 0
-      Tunnel0 is up, line protocol is up
-        Hardware is Tunnel
-        Description: "GRE over IPsec via G1"
-        Internet address is 1.1.247.1/30
-        MTU 9918 bytes, BW 100 Kbit/sec, DLY 50000 usec,
-           reliability 255/255, txload 5/255, rxload 5/255
-        Encapsulation TUNNEL, loopback not set
-        Keepalive not set
-        Tunnel linestate evaluation up
-        Tunnel source 10.16.201.2 (GigabitEthernet1), destination 10.16.201.1
-         Tunnel Subblocks:
-            src-track:
-               Tunnel0 source tracking subblock associated with GigabitEthernet1
-                Set of tunnels with source GigabitEthernet1, 1 member (includes iterators), on interface <OK>
-        Tunnel protocol/transport GRE/IP
-          Key disabled, sequencing disabled
-          Checksumming of packets disabled
-        Tunnel TTL 255, Fast tunneling enabled
-        Tunnel transport MTU 1418 bytes
-        Tunnel transmit bandwidth 8000 (kbps)
-        Tunnel receive bandwidth 8000 (kbps)
-        Tunnel protection via IPSec (profile "p2p-vedge-ipsec-profile")
-        Last input 00:00:03, output 00:00:02, output hang never
-        Last clearing of "show interface" counters 03:22:13
-        Input queue: 0/375/0/0 (size/max/drops/flushes); Total output drops: 0
-        Queueing strategy: fifo
-        Output queue: 0/0 (size/max)
-        5 minute input rate 2000 bits/sec, 2 packets/sec
-        5 minute output rate 2000 bits/sec, 2 packets/sec
-           11790 packets input, 1368759 bytes, 0 no buffer
-           Received 0 broadcasts (0 IP multicasts)
-           0 runts, 0 giants, 0 throttles
-           0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored, 0 abort
-           11538 packets output, 1355417 bytes, 0 underruns
-           Output 0 broadcasts (0 IP multicasts)
-           0 output errors, 0 collisions, 0 interface resets
-           0 unknown protocol drops
-           0 output buffer failures, 0 output buffers swapped out
-
-    on vEDGE-DC02
-    -------------
-
-      vEDGE-DC02#sh ip int bri
-      Interface              IP-Address      OK? Method Status                Protocol
-      GigabitEthernet1       10.16.201.1     YES manual up                    up
-      GigabitEthernet2       unassigned      YES manual up                    up
-      GigabitEthernet3       unassigned      YES NVRAM  up                    up
-      GigabitEthernet4       192.168.182.143 YES DHCP   up                    up
-      Loopback0              2.2.247.2       YES manual up                    up
-      Tunnel0                1.1.247.2       YES manual up                    up
-      vEDGE-DC02#sh int desc
-      Interface                      Status         Protocol Description
-      Gi1                            up             up       "To Internet"
-      Gi2                            up             up
-      Gi3                            up             up
-      Gi4                            up             up
-      Lo0                            up             up       "For iBGP, LDP, and EVPN core"
-      Tu0                            up             up       "GRE over IPSec via G1"
-
-
-      vEDGE-DC02#sh int t0
-      Tunnel0 is up, line protocol is up
-        Hardware is Tunnel
-        Description: "GRE over IPSec via G1"
-        Internet address is 1.1.247.2/30
-        MTU 9918 bytes, BW 100 Kbit/sec, DLY 50000 usec,
-           reliability 255/255, txload 5/255, rxload 5/255
-        Encapsulation TUNNEL, loopback not set
-        Keepalive not set
-        Tunnel linestate evaluation up
-        Tunnel source 10.16.201.1 (GigabitEthernet1), destination 10.16.201.2
-         Tunnel Subblocks:
-            src-track:
-               Tunnel0 source tracking subblock associated with GigabitEthernet1
-                Set of tunnels with source GigabitEthernet1, 1 member (includes iterat                                                                                                                ors), on interface <OK>
-        Tunnel protocol/transport GRE/IP
-          Key disabled, sequencing disabled
-          Checksumming of packets disabled
-        Tunnel TTL 255, Fast tunneling enabled
-        Tunnel transport MTU 1418 bytes
-        Tunnel transmit bandwidth 8000 (kbps)
-        Tunnel receive bandwidth 8000 (kbps)
-        Tunnel protection via IPSec (profile "p2p-vedge-ipsec-profile")
-        Last input 00:00:03, output 00:00:00, output hang never
-        Last clearing of "show interface" counters 02:47:28
-        Input queue: 0/375/0/0 (size/max/drops/flushes); Total output drops: 0
-        Queueing strategy: fifo
-        Output queue: 0/0 (size/max)
-        5 minute input rate 2000 bits/sec, 2 packets/sec
-        5 minute output rate 2000 bits/sec, 2 packets/sec
-           15237 packets input, 1812615 bytes, 0 no buffer
-           Received 0 broadcasts (0 IP multicasts)
-           0 runts, 0 giants, 0 throttles
-           0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored, 0 abort
-           15547 packets output, 1830169 bytes, 0 underruns
-           Output 0 broadcasts (0 IP multicasts)
-           0 output errors, 0 collisions, 0 interface resets
-           0 unknown protocol drops
-           0 output buffer failures, 0 output buffers swapped out
+4. Configure IGP - OSPF for route exchange
+------------------------------------------
 
 .. code-block:: console
-    L3 Connectivity Test
-    --------------------
-    P2P on vEDGE-DC01
-    -----------------
 
-      vEDGE-DC01#ping 10.16.201.1
-      Type escape sequence to abort.
-      Sending 5, 100-byte ICMP Echos to 10.16.201.1, timeout is 2 seconds:
-      !!!!!
-      Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/3 ms
-
-    Lo0 to Lo0 via OSPF and GRE over IPSEC
-    --------------------------------------
-
-      vEDGE-DC01#ping 2.2.247.2 source 2.2.247.1
-      Type escape sequence to abort.
-      Sending 5, 100-byte ICMP Echos to 2.2.247.2, timeout is 2 seconds:
-      Packet sent with a source address of 2.2.247.1
-      !!!!!
-      Success rate is 100 percent (5/5), round-trip min/avg/max = 2/2/3 ms
-
-    P2P on vEDGE-DC01
-    -----------------
-
-      vEDGE-DC02#ping 10.16.201.2
-      Type escape sequence to abort.
-      Sending 5, 100-byte ICMP Echos to 10.16.201.2, timeout is 2 seconds:
-      !!!!!
-      Success rate is 100 percent (5/5), round-trip min/avg/max = 1/4/16 ms
-
-    Lo0 to Lo0 via OSPF and GRE over IPSEC
-    --------------------------------------
-
-      vEDGE-DC02#ping 2.2.247.1 source 2.2.247.2
-      Type escape sequence to abort.
-      Sending 5, 100-byte ICMP Echos to 2.2.247.1, timeout is 2 seconds:
-      Packet sent with a source address of 2.2.247.2
-      !!!!!
-      Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms
-
-    4. Configure IGP - OSPF for route exchange
-    ------------------------------------------
     OSPF Configuration on vEDGE-DC01
     --------------------------------
 
@@ -666,6 +672,7 @@ on vEDGE-DC01
 
 5. Configure MP - BGP for EVPN
 -------------------------------
+
 .. code-block:: console
 
     MP_BGP for vEDGE-DC01
@@ -716,7 +723,9 @@ on vEDGE-DC01
 
     Verify the BGP establishment on either vEDGE-DC01 or vEDGE-DC02
     ---------------------------------------------------------------
+
 .. code-block:: console
+      
       vEDGE-DC01#show bgp l2vpn evpn summary
       BGP router identifier 2.2.247.1, local AS number 65000
       BGP table version is 41, main routing table version 41
@@ -736,7 +745,7 @@ on vEDGE-DC01
 
     Verify the BGP establishment on either vEDGE-DC01 or vEDGE-DC02
     ---------------------------------------------------------------
-.. code-block:: console
+
       vEDGE-DC02# show bgp l2vpn evpn summary
       BGP router identifier 2.2.247.2, local AS number 65000
       BGP table version is 39, main routing table version 39
@@ -757,6 +766,8 @@ on vEDGE-DC01
 6. Configre L2VPN service instance for Customer A
 --------------------------------------------------
 .. code-block:: console
+   
+
     L2VPN service instance for both vEDGE-DC01 and vEDGE-DC02
     ---------------------------------------------------------
 
@@ -838,6 +849,8 @@ on vEDGE-DC01
 7. Configure bridge domain for Customer A
 ------------------------------------------
 .. code-block:: console
+    
+
     Bridge Domain for both vEDGE-DC01 and vEDGE-DC02
     ------------------------------------------------
 
@@ -888,6 +901,8 @@ on vEDGE-DC01
 -----------------------------------------------------
 
 .. code-block:: console
+    
+
     Customer facing interfaces for both vEDGE-DC01 and vEDGE-DC02
     -------------------------------------------------------------
     for untagged
