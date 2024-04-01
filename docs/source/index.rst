@@ -158,6 +158,10 @@ Lab Setup:
           end
           wr me
 
+
+.. code-block:: console
+
+
     2. Enable MPLS & L2 VPN EVPN Globally for both vEDGE-DC01 and vEDGE-DC02
         conf t
         mpls ip 
@@ -170,6 +174,8 @@ Lab Setup:
         !
         end
         wr me
+
+.. code-block:: console
 
 
     3. Configure IKEv2 IPSEC tunnel profile 
@@ -220,8 +226,10 @@ Lab Setup:
       end
       wr me
 
+.. code-block:: console
+
     
-    3. Configure interface for core MPLS MP-BGP infra
+    4. Configure interface for core MPLS MP-BGP infra
       Interface configuration for vEDGE-DC01
         conf t
         interface g1
