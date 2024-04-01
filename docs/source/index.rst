@@ -142,19 +142,17 @@ Lab Setup:
 
 1. Configure interface for core router id
 =========================================
-
-On vEDGE-DC01
-
 .. code-block:: console
+    On vEDGE-DC01
+    -------------
      conf t
       interface lo0
       ip add 2.2.247.2 255.255.255.255
       end
       wr me
 
-On vEDGE-DC02
-
-.. code-block:: console
+    On vEDGE-DC02
+    -------------
       conf t
       interface lo0
       ip add 2.2.247.2 255.255.255.255
