@@ -115,13 +115,37 @@ Lab Setup:
 
 7. Open your faviroute and type the IP address show on the above screen to access the Admin GUI.
 
+   * username: admin
+   * password: eve
+   * Choose HTML5 as console for ease access
+
 .. image:: eve-ng-admin-gui.png
   :width: 600
   :alt: Alternative text
 
-6. The configuration file for vEDGE01 and vEDGE02 are as below
+8. On the EVE-NG, Admin Dashboard look for LISP.unl and click on open lab.
+
+.. image:: Screen4.png
+  :width: 600
+  :alt: Alternative text
+
+9. On the Lab Right Click and select start on the vEDGE-DC01, vEDGE-DC02, PC01 and PC02 to power on the routers and pc's.
+
+.. image:: Screen4.png
+  :width: 600
+  :alt: Alternative text
+
+.. image:: Screen5.png
+  :width: 600
+  :alt: Alternative text
+
+
+11. Double click on the network components such as Routers, Switches and PC's to open HTML5 based terminal.
+
+12. The configuration file for vEDGE01 and vEDGE02 are as below
 
    * Download the scripts from : https://github.com/arunkumaruniqpro/LISP
+
 
 1. On pc1
 ---------
