@@ -22,6 +22,6 @@ In BGP MPLS-based EVPN, an EVI is configured for every PE device for each custom
 
 For EVPN Single-Homing feature, a CE device is attached to a single PE device and has an Ethernet Segment with ESI=0.
 
-.. image:: Network_Diagram.png
+.. image:: Network_Diagam.png
   :width: 600
   :alt: Alternative text
