@@ -154,9 +154,10 @@ code ..
 12. User credentials to access the vEDGE-DC01, vEDGE-DC02, leaf-DC01-SWW01 and leaf-DC02-SW02
 
 .. code-block:: console
-         * username: cisco
-         * password: P@ssw0rd!123
-         * enable: P@ssw0rd!123
+
+         username: cisco
+         password: P@ssw0rd!123
+         enable: P@ssw0rd!123
 
 
 13. Optional: Onboarding vEDGE's to controller
