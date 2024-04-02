@@ -75,19 +75,19 @@ Lab Setup:
 2. Install the VMWare software in accordance to your operating system by following the installation guide.
 
 .. code-block:: console
-       * https://docs.vmware.com/en/VMware-Workstation-Pro/17/com.vmware.ws.using.doc/GUID-7179281C-903A-46A9-89EE-C10B126D4960.html
-
-
-                                            OR
-
-       * https://www.vmware.com/pdf/desktop/fusion-getting-started-50.pdf
+             * https://docs.vmware.com/en/VMware-Workstation-Pro/17/com.vmware.ws.using.doc/GUID-7179281C-903A-46A9-89EE-C10B126D4960.html
+      
+      
+                                                  OR
+      
+             * https://www.vmware.com/pdf/desktop/fusion-getting-started-50.pdf
 
 
 
 3. Download the prebuild EVE-NG lab OVF file from the Google Drive.
 
 .. code-block:: console
-       * https://drive.google.com/file/d/1CqPXxXEIfGA8OGvMnv51i5xOQtZW5D7w/view?usp=drive_link
+           * https://drive.google.com/file/d/1CqPXxXEIfGA8OGvMnv51i5xOQtZW5D7w/view?usp=drive_link
 
 4. Extract or unzip the file using zip extractor or windows default zip
 
@@ -120,9 +120,9 @@ Lab Setup:
 7. Open your faviroute and type the IP address show on the above screen to access the Admin GUI.
 
 .. code-block:: console
-       * username: admin
-       * password: eve
-       * Choose HTML5 as console for ease access
+           * username: admin
+           * password: eve
+           * Choose HTML5 as console for ease access
 code ..
 
 .. image:: eve-ng-admin-gui.png
@@ -151,9 +151,9 @@ code ..
 12. User credentials to access the vEDGE-DC01, vEDGE-DC02, leaf-DC01-SWW01 and leaf-DC02-SW02
 
 .. code-block:: console
-   * username: cisco
-   * password: P@ssw0rd!123
-   * enable: P@ssw0rd!123
+         * username: cisco
+         * password: P@ssw0rd!123
+         * enable: P@ssw0rd!123
 
 
 13. Optional: Onboarding vEDGE's to controller
@@ -178,8 +178,15 @@ code ..
 
 .. code-block:: console
 
+      1. Enable Cisco Network Advantage and DNA Advantage license on vEDGE's
 
-      1. Configure interface for core loopback router id
+          conf t
+            license boot level network-advantage addon dna-advantage
+          end
+
+          Note: Stop and Start the vEDGE's to take effect without the above licenses you cant enable MPLS and Crypto's
+
+      2. Configure interface for core loopback router id
         On vEDGE-DC01
          conf t
           interface lo0
@@ -198,7 +205,7 @@ code ..
 .. code-block:: console
 
 
-    2. Enable MPLS & L2 VPN EVPN Globally for both vEDGE-DC01 and vEDGE-DC02
+    3. Enable MPLS & L2 VPN EVPN Globally for both vEDGE-DC01 and vEDGE-DC02
         conf t
         mpls ip 
         mpls label protocol ldp
@@ -214,7 +221,7 @@ code ..
 .. code-block:: console
 
 
-    3. Configure IKEv2 IPSEC tunnel profile 
+    4. Configure IKEv2 IPSEC tunnel profile 
 
      IKEv2 Proposal for both vEDGE-DC01 and vEDGE-
       Conf t
@@ -475,7 +482,7 @@ code ..
           !!!!!
           Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms
 
-        4. Configure IGP - OSPF for route exchange
+        5. Configure IGP - OSPF for route exchange
         OSPF Configuration on vEDGE-DC01
     
           conf t
@@ -671,7 +678,7 @@ code ..
     
     
     
-        5. Configure MP - BGP for EVPN
+        6. Configure MP - BGP for EVPN
         MP_BGP for vEDGE-DC01
     
           conf t
@@ -1084,5 +1091,109 @@ code ..
              -----------------------------------------------------------------------------
              -   0050.0000.0400 forward static_r  0    EFI1015.1015.4210704, EVPN
              -   0050.0000.0600 forward dynamic_c 29   GigabitEthernet2.EFP1015
-    
-    
+
+On DC01-SW01 and DC02-SW02
+===========================
+
+.. code-block:: console
+          hostname_Switch1: leaf-DC01-SW01
+          hostname_Switch2: leaf-DC02-SW02
+
+        1. Global Configuration
+          conf t
+            hostname <host_name>
+            username cisco priv 15 password 0 P@ssw0rd!123
+            service password-encryption
+            aaa new-model
+            aaa authentication login default local
+            line vty 0 4
+            transport in ssh
+            end
+            wr me
+
+        2. Management interface Configuration
+          conf t
+            interface eth0/4
+            no shut
+            ip address dhcp
+            end
+
+        3. Connecting vEDGE's to PC's interface Configuration for untagged
+          conf t
+            vlan 5
+              name DCI-VLAN05
+            exit
+            !
+            interface eth0/0
+            desc "To vEDGE port G2"
+            no shut
+            switchport
+            switchport mode access
+            switchport access vlan name DCI-VLAN05
+            exit
+            !
+            interface eth0/1
+            desc "To PC port eth0"
+            no shut
+            switchport
+            switchport mode access
+            switchport access vlan name DCI-VLAN05
+            end
+            wr me
+
+        4. Connecting vEDGE's to PC's interface Configuration for Tagged VLAN 05
+          conf t
+            vlan 5
+              name DCI-VLAN05
+            exit
+            !
+            interface eth0/0
+            desc "To vEDGE port G2"
+            no shut
+            switchport
+            switchport trunk encapsulation dot1q
+            switchport mode trunk
+            switchport trunk allowed vlan 5
+            exit
+            !
+            interface eth0/1
+            desc "To PC port eth0"
+            no shut
+            switchport
+            switchport mode access
+            switchport access vlan name DCI-VLAN05
+            end
+            wr me
+
+        5. Connecting vEDGE's to PC's interface Configuration for Tagged VLAN 05 to end host
+          conf t
+            vlan 5
+              name DCI-VLAN05
+            exit
+            !
+            interface eth0/0
+            desc "To vEDGE port G2"
+            no shut
+            switchport
+            switchport trunk encapsulation dot1q
+            switchport mode trunk
+            switchport trunk allowed vlan 5
+            exit
+            !
+            interface eth0/1
+            desc "To PC port eth0"
+            no shut
+            switchport
+            switchport trunk encapsulation dot1q
+            switchport mode trunk
+            switchport trunk allowed vlan 5
+            end
+            wr me
+
+        6. Verification on switches
+            1. show vlan brief
+            2. show ip int brief
+            3. show interface trunk
+            4. show interface eth0/0 switchport
+            5. show interface eth0/1 switchport
+            6. show mac addr
