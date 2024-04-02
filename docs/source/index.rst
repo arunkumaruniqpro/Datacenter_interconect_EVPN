@@ -49,8 +49,8 @@ The network is configured as follows:
    * Loopback0(2.2.247.2/32): This interface is used to establish dynamic Routing and LISP.
    * Tunnel2(1.1.247.2/32): This interface is used to establis IPSec tunnel using VTI.
 
-Lab Documentation: Extending Layer2 across Datacenters using Locator Identity Separation Protocol (LISP)'s!
-===========================================================================================================
+Lab Documentation: Extending Layer2 across Datacenters using EVPN - MP-BGP!
+===========================================================================
 This document describes a network lab setup with two PCs (PC1, and PC2), a vEDGE router cisco 8000v (IoS XE), IPSec Site 2 Site Tunnel using SVTI, OSPF, MPLS, MP-BGP and EVPN
 The lab demonstrates routing, connectivity, and L2 Extension across DC's using IPSec Site 2 Site Tunnel using SVTI, OSPF, MPLS, MP-BGP and EVPN protocols.
 
@@ -159,21 +159,9 @@ code ..
 13. Optional: Onboarding vEDGE's to controller
    * https://www.networkacademy.io/ccie-enterprise/sdwan/onboarding-cedge-c8000v
 
-1. On pc1
----------
-* Set up IP settings as follows:
-   * IP address: 11.11.11.11
-   * Subnet Mask: 255.255.255.0
-   * Gateway: 11.11.11.254
 
-2. On pc2
----------
-* Set up IP settings as follows:
-   * IP address: 11.11.11.12
-   * Subnet Mask: 255.255.255.0
-   * Gateway: 11.11.11.253
 
-3. On vEDGE-DC01 and vEDGE-DC02 router
+1. On vEDGE-DC01 and vEDGE-DC02 router
 ======================================
 
 .. code-block:: console
@@ -1128,7 +1116,7 @@ code ..
 
 
 
-4. On DC01-SW01 and DC02-SW02
+2. On DC01-SW01 and DC02-SW02
 =============================
 
 .. code-block:: console
@@ -1241,3 +1229,70 @@ code ..
             4. show interface eth0/0 switchport
             5. show interface eth0/1 switchport
             6. show mac addr
+
+
+2. On pc1
+=========
+
+Step1: On the TinyCore Desktop
+
+.. image:: Screen5.png
+  :width: 600
+  :alt: Alternative text
+
+Step2: Click on the maintenance icon at the bottom dock
+
+.. image:: Screen5.png
+  :width: 600
+  :alt: Alternative text
+
+
+Step3: Click on the nework to configure the below ip, netmask and gateway
+
+.. code-block:: console
+        * Set up IP settings as follows:
+           * IP address: 11.11.11.11
+           * Subnet Mask: 255.255.255.0
+           * Gateway: 11.11.11.12
+
+4. On pc2
+=========
+Step1: On the TinyCore Desktop
+
+.. image:: Screen5.png
+  :width: 600
+  :alt: Alternative text
+
+Step2: Click on the maintenance icon at the bottom dock
+
+.. image:: Screen5.png
+  :width: 600
+  :alt: Alternative text
+
+
+Step3: Click on the nework to configure the below ip, netmask and gateway
+
+.. code-block:: console
+
+        * Set up IP settings as follows:
+           * IP address: 11.11.11.12
+           * Subnet Mask: 255.255.255.0
+           * Gateway: 11.11.11.11
+
+
+5. End to End Testing
+======================
+.. code-block:: console
+            On PC01
+            1. Open terminal and issue the following command
+                a. ip a --> to confirm the assigned ip address on the eth0
+                b. ip route show --> to confirm the default gateway
+                b. ping 11.11.11.12 --> to confirm the end to end connectivity is there 
+
+
+.. code-block:: console
+            On PC02
+            1. Open terminal and issue the following command
+                a. ip a --> to confirm the assigned ip address on the eth0
+                b. ip route show --> to confirm the default gateway
+                b. ping 11.11.11.12 --> to confirm the end to end connectivity is there 
