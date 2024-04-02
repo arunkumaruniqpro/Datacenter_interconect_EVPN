@@ -67,7 +67,7 @@ Lab Setup:
 
 1. Download the VMware workstation or fusion for flavour of the operating system or if you have VMWare ESXi server then follow the below steps to provision the VM.
    * System Requirement
-   * Minimum RAM: 12G
+   * Minimum RAM: 16G
    * Processor: 2
    * HDD: 30G
 
@@ -75,19 +75,23 @@ Lab Setup:
 2. Install the VMWare software in accordance to your operating system by following the installation guide.
 
 .. code-block:: console
-             * https://docs.vmware.com/en/VMware-Workstation-Pro/17/com.vmware.ws.using.doc/GUID-7179281C-903A-46A9-89EE-C10B126D4960.html
+             https://docs.vmware.com/en/VMware-Workstation-Pro/17/com.vmware.ws.using.doc/GUID-7179281C-903A-46A9-89EE-C10B126D4960.html
       
       
                                                   OR
-      
-             * https://www.vmware.com/pdf/desktop/fusion-getting-started-50.pdf
+ .. code-block:: console
+
+             https://www.vmware.com/pdf/desktop/fusion-getting-started-50.pdf
 
 
 
 3. Download the prebuild EVE-NG lab OVF file from the Google Drive.
 
 .. code-block:: console
-           * https://drive.google.com/file/d/18RXKkAczP_f8xt5MIGc7_f0aOM0xmcAU/view?usp=drive_link
+
+           https://drive.google.com/file/d/18RXKkAczP_f8xt5MIGc7_f0aOM0xmcAU/view?usp=drive_link
+
+
 
 4. Extract or unzip the file using zip extractor or windows default zip
 
@@ -164,6 +168,8 @@ code ..
 .. code-block:: console
 
             https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/prog/command/1711/b_1711_programmability_cr/1711_programmability_cr_CLT_chapter.html
+
+.. code-block:: console
 
             https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/17_xe/command/command-references.html
 
@@ -1154,6 +1160,7 @@ code ..
           conf t
             interface eth0/4
             no shut
+            no switchport
             ip address dhcp
             end
 
@@ -1306,3 +1313,13 @@ Step3: Click on the nework to configure the below ip, netmask and gateway
                 a. ip a --> to confirm the assigned ip address on the eth0
                 b. ip route show --> to confirm the default gateway
                 b. ping 11.11.11.12 --> to confirm the end to end connectivity is there 
+
+
+6. SSH into Devices
+===================
+
+Step1: After successfull boot up double click the device to get HTML5 based console access, enter the user cresentials to login to the execute mode
+
+.. image:: network_conf.png
+  :width: 600
+  :alt: Alternative text
