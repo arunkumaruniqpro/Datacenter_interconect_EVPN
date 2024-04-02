@@ -1282,6 +1282,8 @@ Step3: Click on the nework to configure the below ip, netmask and gateway
 5. End to End Testing
 ======================
 .. code-block:: console
+
+
             On PC01
             1. Open terminal and issue the following command
                 a. ip a --> to confirm the assigned ip address on the eth0
@@ -1290,6 +1292,8 @@ Step3: Click on the nework to configure the below ip, netmask and gateway
 
 
 .. code-block:: console
+
+
             On PC02
             1. Open terminal and issue the following command
                 a. ip a --> to confirm the assigned ip address on the eth0
