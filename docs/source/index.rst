@@ -1236,13 +1236,13 @@ code ..
 
 Step1: On the TinyCore Desktop
 
-.. image:: Screen5.png
+.. image:: tiny-core-desktop.avif
   :width: 600
   :alt: Alternative text
 
 Step2: Click on the maintenance icon at the bottom dock
 
-.. image:: Screen5.png
+.. image:: network_conf.png
   :width: 600
   :alt: Alternative text
 
@@ -1259,13 +1259,13 @@ Step3: Click on the nework to configure the below ip, netmask and gateway
 =========
 Step1: On the TinyCore Desktop
 
-.. image:: Screen5.png
+.. image:: tiny-core-desktop.avif
   :width: 600
   :alt: Alternative text
 
 Step2: Click on the maintenance icon at the bottom dock
 
-.. image:: Screen5.png
+.. image:: network_conf.png
   :width: 600
   :alt: Alternative text
 
