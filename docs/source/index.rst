@@ -1158,7 +1158,7 @@ code ..
 
         2. Management interface Configuration
           conf t
-            interface eth0/4
+            interface eth0/3
             no shut
             no switchport
             ip address dhcp
