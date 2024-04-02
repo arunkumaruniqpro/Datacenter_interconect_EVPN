@@ -177,7 +177,7 @@ code ..
 
 .. code-block:: console
 
-            https://github.com/arunkumaruniqpro/L2VPN-EVPN.git
+            https://drive.google.com/drive/folders/1yHk81Uf2YtJQECsduuFw2xLJDC2yVNA0?usp=sharing
 
 1. On vEDGE-DC01 and vEDGE-DC02 router
 ======================================
