@@ -1245,6 +1245,89 @@ code ..
             6. show mac addr
 
 
+        7. outputs - 802.1Q enabled
+            on DC01-SW01 
+            DC01-SW01#sh ip int bri
+            Interface              IP-Address      OK? Method Status                Protocol
+            Ethernet0/0            unassigned      YES unset  up                    up
+            Ethernet0/1            unassigned      YES unset  up                    up
+            Ethernet0/2            unassigned      YES unset  up                    up
+            Ethernet0/3            192.168.182.145 YES DHCP   up                    up
+
+            DC01-SW01#sh int trunk
+            Port        Mode             Encapsulation  Status        Native vlan
+            Et0/0       on               802.1q         trunking      1
+            Port        Vlans allowed on trunk
+            Et0/0       5
+            Port        Vlans allowed and active in management domain
+            Et0/0       5
+            Port        Vlans in spanning tree forwarding state and not pruned
+            Et0/0       5
+
+            DC01-SW01#sh vlan brief
+            VLAN Name                             Status    Ports
+            ---- -------------------------------- --------- -------------------------------
+            1    default                          active    Et0/2
+            5    DCI-VLAN                         active    Et0/1
+            1002 fddi-default                     act/unsup
+            1003 token-ring-default               act/unsup
+            1004 fddinet-default                  act/unsup
+            1005 trnet-default                    act/unsup
+
+            on DC02-SW01
+            DC02-SW01#sh ip int bri
+            Interface              IP-Address      OK? Method Status                Protocol
+            Ethernet0/0            unassigned      YES unset  up                    up
+            Ethernet0/1            unassigned      YES unset  up                    up
+            Ethernet0/2            unassigned      YES unset  up                    up
+            Ethernet0/3            192.168.182.146 YES DHCP   up                    up
+
+            DC02-SW01#sh int trunk
+            Port        Mode             Encapsulation  Status        Native vlan
+            Et0/0       on               802.1q         trunking      1
+            Port        Vlans allowed on trunk
+            Et0/0       5
+            Port        Vlans allowed and active in management domain
+            Et0/0       5
+            Port        Vlans in spanning tree forwarding state and not pruned
+            Et0/0       5
+
+            DC02-SW01#sh vlan brief
+            VLAN Name                             Status    Ports
+            ---- -------------------------------- --------- -------------------------------
+            1    default                          active    Et0/2
+            5    DCI-VLAN                         active    Et0/1
+            1002 fddi-default                     act/unsup
+            1003 token-ring-default               act/unsup
+            1004 fddinet-default                  act/unsup
+            1005 trnet-default                    act/unsup
+
+            8. outputs - 802.3 enabled
+            on DC01-SW01
+            DC01-SW01#sh vlan brief
+            VLAN Name                             Status    Ports
+            ---- -------------------------------- --------- -------------------------------
+            1    default                          active    Et0/2
+            5    DCI-VLAN                         active    Et0/0, Et0/1
+            1002 fddi-default                     act/unsup
+            1003 token-ring-default               act/unsup
+            1004 fddinet-default                  act/unsup
+            1005 trnet-default                    act/unsup
+            DC01-SW01#sh int trunk
+
+            on DC02-SW01
+            DC02-SW01#sh vlan brief
+            VLAN Name                             Status    Ports
+            ---- -------------------------------- --------- -------------------------------
+            1    default                          active    Et0/2
+            5    DCI-VLAN                         active    Et0/0, Et0/1
+            1002 fddi-default                     act/unsup
+            1003 token-ring-default               act/unsup
+            1004 fddinet-default                  act/unsup
+            1005 trnet-default                    act/unsup
+            DC01-SW01#sh int trunk
+
+
 2. On pc1
 =========
 
