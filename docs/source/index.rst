@@ -178,13 +178,32 @@ code ..
 
 .. code-block:: console
 
-      1. Enable Cisco Network Advantage and DNA Advantage license on vEDGE's
-
+      1. Enable Cisco Network Advantage and DNA Advantage license on vEDGE's and management ip address
+          hostname_switch1: vEDGE-DC01-SW01
+          hostname_switch1: vEDGE-DC02-SW02
           conf t
             license boot level network-advantage addon dna-advantage
-          end
+            hostname <host_name>
+            username cisco priv 15 password 0 P@swsw0rd!123
+            service password-encryption
+            crypto key generate rsa mod 2048
+            aaa new-model
+            aaa authentication login default local
+            line vty 0 4
+            transport in ssh
+          exit
+          interface g4
+          desc "To Management Network - NAT on VMWARE"
+          no shut
+          ip address dhcp
+          wr me
 
           Note: Stop and Start the vEDGE's to take effect without the above licenses you cant enable MPLS and Crypto's
+
+          Verification
+          1. show ip int bri --> take note of DHCP assigned ip address on interface G4
+          2. ssh -l cisco <int_g4_ip_address>
+          2. Accessing the vEDGE's from Windows Host, using putty ssh to <int_g4_ip_address>
 
       2. Configure interface for core loopback router id
         On vEDGE-DC01
@@ -1120,6 +1139,7 @@ code ..
           conf t
             hostname <host_name>
             username cisco priv 15 password 0 P@ssw0rd!123
+            crypto key generate rsa mod 2048
             service password-encryption
             aaa new-model
             aaa authentication login default local
@@ -1127,6 +1147,13 @@ code ..
             transport in ssh
             end
             wr me
+
+
+            Verification
+            1. show ip int bri --> take note of DHCP assigned ip address on interface G4
+            2. ssh -l cisco <int_g4_ip_address>
+            2. Accessing the vEDGE's from Windows Host, using putty ssh to <int_g4_ip_address>
+
 
         2. Management interface Configuration
           conf t
