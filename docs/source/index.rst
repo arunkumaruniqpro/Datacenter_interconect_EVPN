@@ -75,10 +75,9 @@ Lab Setup:
 2. Install the VMWare software in accordance to your operating system by following the installation guide.
 
 .. code-block:: console
+
              https://docs.vmware.com/en/VMware-Workstation-Pro/17/com.vmware.ws.using.doc/GUID-7179281C-903A-46A9-89EE-C10B126D4960.html
       
-      
-                                                  OR
  .. code-block:: console
 
              https://www.vmware.com/pdf/desktop/fusion-getting-started-50.pdf
