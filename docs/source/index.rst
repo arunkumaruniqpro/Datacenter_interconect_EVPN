@@ -88,7 +88,7 @@ Lab Setup:
 
 .. code-block:: console
 
-           https://drive.google.com/file/d/18RXKkAczP_f8xt5MIGc7_f0aOM0xmcAU/view?usp=drive_link
+           https://drive.google.com/file/d/18RXKkAczP_f8xt5MIGc7_f0aOM0xmcAU/view?usp=sharing
 
 
 
