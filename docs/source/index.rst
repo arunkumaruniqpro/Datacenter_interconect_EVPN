@@ -28,7 +28,7 @@ https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/mpls/b-mpls/m-ce-e
 LAB - Topology
 ===============
 
-.. image:: Network_Diagam.png
+.. image:: Network_Diagram.png
   :width: 600
   :alt: Lab Network Toplogy
 
@@ -173,6 +173,11 @@ code ..
 
             https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/17_xe/command/command-references.html
 
+15. You can find the configuration script on the below folder
+
+.. code-block:: console
+
+            https://github.com/arunkumaruniqpro/L2VPN-EVPN.git
 
 1. On vEDGE-DC01 and vEDGE-DC02 router
 ======================================
