@@ -157,6 +157,9 @@ code ..
 
 code ..
 
+14. Optional: Onboarding vEDGE's to controller
+   * https://www.networkacademy.io/ccie-enterprise/sdwan/onboarding-cedge-c8000v
+
 1. On pc1
 ---------
 * Set up IP settings as follows:
