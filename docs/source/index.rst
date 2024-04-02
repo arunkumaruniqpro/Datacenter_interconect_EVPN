@@ -896,7 +896,7 @@ code ..
 .. code-block:: console
 
     
-        9. Configure Customer facing interface for Customer A
+        10. Configure Customer facing interface for Customer A
         Customer facing interfaces for both vEDGE-DC01 and vEDGE-DC02
         for untagged
     
