@@ -272,7 +272,7 @@ code ..
 .. code-block:: console
 
     
-    4. Configure interface for core MPLS MP-BGP infra
+    5. Configure interface for core MPLS MP-BGP infra
       Interface configuration for vEDGE-DC01
         conf t
         interface g1
@@ -482,7 +482,11 @@ code ..
           !!!!!
           Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms
 
-        5. Configure IGP - OSPF for route exchange
+
+.. code-block:: console
+
+    
+        6. Configure IGP - OSPF for route exchange
         OSPF Configuration on vEDGE-DC01
     
           conf t
@@ -677,8 +681,10 @@ code ..
                                                  1162762       none       point2point
     
     
-    
-        6. Configure MP - BGP for EVPN
+.. code-block:: console
+
+        
+        7. Configure MP - BGP for EVPN
         MP_BGP for vEDGE-DC01
     
           conf t
@@ -760,8 +766,11 @@ code ..
           Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
           2.2.247.1       4        65000     198     205       39    0    0 02:44:55        3
     
+
+.. code-block:: console
+
     
-        6. Configre L2VPN service instance for Customer A
+        8. Configre L2VPN service instance for Customer A
         L2VPN service instance for both vEDGE-DC01 and vEDGE-DC02
     
           conf t
@@ -836,8 +845,11 @@ code ..
                 2.2.247.1
                   Routes: 1 MAC, 1 MAC/IP, 1 IMET, 0 EAD
     
+
+.. code-block:: console
+
     
-        7. Configure bridge domain for Customer A
+        9. Configure bridge domain for Customer A
         Bridge Domain for both vEDGE-DC01 and vEDGE-DC02
     
           conf t
@@ -879,9 +891,12 @@ code ..
              -----------------------------------------------------------------------------
              -   0050.0000.0400 forward static_r  0    EFI1015.1015.4210704, EVPN
              -   0050.0000.0600 forward dynamic_c 29   GigabitEthernet2.EFP1015
+
+
+.. code-block:: console
+
     
-    
-        8. Configure Customer facing interface for Customer A
+        9. Configure Customer facing interface for Customer A
         Customer facing interfaces for both vEDGE-DC01 and vEDGE-DC02
         for untagged
     
@@ -1092,8 +1107,10 @@ code ..
              -   0050.0000.0400 forward static_r  0    EFI1015.1015.4210704, EVPN
              -   0050.0000.0600 forward dynamic_c 29   GigabitEthernet2.EFP1015
 
-On DC01-SW01 and DC02-SW02
-===========================
+
+
+4. On DC01-SW01 and DC02-SW02
+=============================
 
 .. code-block:: console
           hostname_Switch1: leaf-DC01-SW01
