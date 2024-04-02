@@ -87,7 +87,7 @@ Lab Setup:
 3. Download the prebuild EVE-NG lab OVF file from the Google Drive.
 
 .. code-block:: console
-           * https://drive.google.com/file/d/1CqPXxXEIfGA8OGvMnv51i5xOQtZW5D7w/view?usp=drive_link
+           * https://drive.google.com/file/d/18RXKkAczP_f8xt5MIGc7_f0aOM0xmcAU/view?usp=drive_link
 
 4. Extract or unzip the file using zip extractor or windows default zip
 
@@ -159,6 +159,13 @@ code ..
 13. Optional: Onboarding vEDGE's to controller
    * https://www.networkacademy.io/ccie-enterprise/sdwan/onboarding-cedge-c8000v
 
+14. Please refer to command reference guide offered by cisco
+
+.. code-block:: console
+
+            https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/prog/command/1711/b_1711_programmability_cr/1711_programmability_cr_CLT_chapter.html
+
+            https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/17_xe/command/command-references.html
 
 
 1. On vEDGE-DC01 and vEDGE-DC02 router
