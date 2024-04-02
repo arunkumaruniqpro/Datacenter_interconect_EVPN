@@ -1,5 +1,5 @@
-Welcome to DCI-EVPN's documentation!
-====================================
+L2 Extension over EVPN supporting IEEE standard 802.2 and 802.1Q documentation!
+===============================================================================
 
 **DCI-EVPN** is a interconnect that utilizes the MP-BGP and MPLS backbone to connect two or more Datacentre without the traditional flood and learn variant of MPLS (VPLS).
 
