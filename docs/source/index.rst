@@ -1250,10 +1250,10 @@ Step2: Click on the maintenance icon at the bottom dock
 Step3: Click on the nework to configure the below ip, netmask and gateway
 
 .. code-block:: console
-        * Set up IP settings as follows:
-           * IP address: 11.11.11.11
-           * Subnet Mask: 255.255.255.0
-           * Gateway: 11.11.11.12
+
+           IP address: 11.11.11.11
+           Subnet Mask: 255.255.255.0
+           Gateway: 11.11.11.12
 
 4. On pc2
 =========
@@ -1274,10 +1274,9 @@ Step3: Click on the nework to configure the below ip, netmask and gateway
 
 .. code-block:: console
 
-        * Set up IP settings as follows:
-           * IP address: 11.11.11.12
-           * Subnet Mask: 255.255.255.0
-           * Gateway: 11.11.11.11
+               IP address: 11.11.11.12
+               Subnet Mask: 255.255.255.0
+               Gateway: 11.11.11.11
 
 
 5. End to End Testing
