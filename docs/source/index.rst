@@ -74,16 +74,20 @@ Lab Setup:
 
 2. Install the VMWare software in accordance to your operating system by following the installation guide.
 
-   * https://docs.vmware.com/en/VMware-Workstation-Pro/17/com.vmware.ws.using.doc/GUID-7179281C-903A-46A9-89EE-C10B126D4960.html
+.. code-block:: console
+       * https://docs.vmware.com/en/VMware-Workstation-Pro/17/com.vmware.ws.using.doc/GUID-7179281C-903A-46A9-89EE-C10B126D4960.html
 
 
-                                        OR
+                                            OR
 
-   * https://www.vmware.com/pdf/desktop/fusion-getting-started-50.pdf
+       * https://www.vmware.com/pdf/desktop/fusion-getting-started-50.pdf
+
+
 
 3. Download the prebuild EVE-NG lab OVF file from the Google Drive.
 
-   * https://drive.google.com/file/d/1CqPXxXEIfGA8OGvMnv51i5xOQtZW5D7w/view?usp=drive_link
+.. code-block:: console
+       * https://drive.google.com/file/d/1CqPXxXEIfGA8OGvMnv51i5xOQtZW5D7w/view?usp=drive_link
 
 4. Extract or unzip the file using zip extractor or windows default zip
 
@@ -116,9 +120,9 @@ Lab Setup:
 7. Open your faviroute and type the IP address show on the above screen to access the Admin GUI.
 
 .. code-block:: console
-   * username: admin
-   * password: eve
-   * Choose HTML5 as console for ease access
+       * username: admin
+       * password: eve
+       * Choose HTML5 as console for ease access
 code ..
 
 .. image:: eve-ng-admin-gui.png
@@ -144,20 +148,15 @@ code ..
 
 11. Double click on the network components such as Routers, Switches and PC's to open HTML5 based terminal.
 
-12. The configuration file for vEDGE01 and vEDGE02 are as below
-
-   * Download the scripts from : https://github.com/arunkumaruniqpro/LISP
-
-13. User credentials to access the vEDGE-DC01, vEDGE-DC02, leaf-DC01-SWW01 and leaf-DC02-SW02
+12. User credentials to access the vEDGE-DC01, vEDGE-DC02, leaf-DC01-SWW01 and leaf-DC02-SW02
 
 .. code-block:: console
    * username: cisco
    * password: P@ssw0rd!123
    * enable: P@ssw0rd!123
 
-code ..
 
-14. Optional: Onboarding vEDGE's to controller
+13. Optional: Onboarding vEDGE's to controller
    * https://www.networkacademy.io/ccie-enterprise/sdwan/onboarding-cedge-c8000v
 
 1. On pc1
