@@ -115,9 +115,11 @@ Lab Setup:
 
 7. Open your faviroute and type the IP address show on the above screen to access the Admin GUI.
 
+.. code-block:: console
    * username: admin
    * password: eve
    * Choose HTML5 as console for ease access
+code ..
 
 .. image:: eve-ng-admin-gui.png
   :width: 600
@@ -146,6 +148,14 @@ Lab Setup:
 
    * Download the scripts from : https://github.com/arunkumaruniqpro/LISP
 
+13. User credentials to access the vEDGE-DC01, vEDGE-DC02, leaf-DC01-SWW01 and leaf-DC02-SW02
+
+.. code-block:: console
+   * username: cisco
+   * password: P@ssw0rd!123
+   * enable: P@ssw0rd!123
+
+code ..
 
 1. On pc1
 ---------
