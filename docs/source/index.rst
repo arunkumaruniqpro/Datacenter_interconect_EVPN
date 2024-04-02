@@ -151,7 +151,7 @@ code ..
 
 11. Double click on the network components such as Routers, Switches and PC's to open HTML5 based terminal.
 
-12. User credentials to access the vEDGE-DC01, vEDGE-DC02, leaf-DC01-SWW01 and leaf-DC02-SW02
+12. User credentials to access the vEDGE-DC01, vEDGE-DC02, leaf-DC01-SWW01 and leaf-DC02-SW01
 
 .. code-block:: console
 
@@ -181,7 +181,7 @@ code ..
 
       1. Enable Cisco Network Advantage and DNA Advantage license on vEDGE's and management ip address
           hostname_switch1: vEDGE-DC01-SW01
-          hostname_switch1: vEDGE-DC02-SW02
+          hostname_switch1: vEDGE-DC02-SW01
           conf t
             license boot level network-advantage addon dna-advantage
             hostname <host_name>
@@ -1129,12 +1129,12 @@ code ..
 
 
 
-2. On DC01-SW01 and DC02-SW02
+2. On DC01-SW01 and DC02-SW01
 =============================
 
 .. code-block:: console
-          hostname_Switch1: leaf-DC01-SW01
-          hostname_Switch2: leaf-DC02-SW02
+          hostname_Switch1: DC01-SW01
+          hostname_Switch2: DC02-SW01
 
         1. Global Configuration
           conf t
@@ -1401,8 +1401,17 @@ Step3: Click on the nework to configure the below ip, netmask and gateway
 6. SSH into Devices
 ===================
 
-Step1: After successfull boot up double click the device to get HTML5 based console access, enter the user cresentials to login to the execute mode
+Step1: After successfull boot up double click the device to get HTML5 based console access, enter the user cresentials to login to the execute mode, execute 'show ip int bri' to find the DHCP assigned IP address
 
-.. image:: network_conf.png
+.. image:: Screen6.png
   :width: 600
   :alt: Alternative text
+
+Step2: Open SSH client and SSH to the dynamic IP address to login to the device locally from windows host.
+in this example
+   * vEDGE-DC01: 192.168.182.144
+   * vEDGE-DC02: 192.168.182.143
+   * DC01-SW01: 192.168.182.145
+   * DC02-SW01: 192.168.182.146
+
+
